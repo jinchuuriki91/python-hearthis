@@ -1,11 +1,13 @@
 # Python imports
 from requests import Session
+from json import JSONDecodeError
 
 
 class Hearthis(object):
 
     SEARCH_TYPE = ["tracks", "user", "playlists"]
     FEED_TYPE = ["popular", "new"]
+    ARTIST_LIST_TYPE = ["likes", "playlists", "tracks"]
 
     def __init__(
             self, email=None, password=None, requests_timeout=None,
@@ -49,7 +51,11 @@ class Hearthis(object):
 
         print(req.request.url)
         print(req.request.body)
-        return req.json()
+        print(req.content)
+        try:
+            return req.json()
+        except JSONDecodeError:
+            return req.content
 
     def login(self, email, password):
         payload = {
@@ -114,5 +120,75 @@ class Hearthis(object):
         }
         return self._request("GET", "/categories/%s/" % genre, params=params)
 
-    def single_artist(self, artist):
+    def artist(self, artist):
         return self._request("GET", "/%s/" % artist)
+
+    def artist_follow_unfollow(self, artist_id):
+        payload = {
+            "action": "follow",
+            "userid": artist_id
+        }
+        return self._request(
+            "POST", "/user_ajax_function.php", payload=payload)
+
+    def artist_list(self, artist, type="tracks", page=None, count=None):
+
+        if type not in self.ARTIST_LIST_TYPE:
+            raise Exception("Invalid list type")
+
+        params = {
+            "type": type,
+            "page": page if page else self.default_page,
+            "count": count if count else self.default_count
+        }
+        return self._request("GET", "/%s/" % artist, params=params)
+
+    def track(self, track_uri):
+        return self._request("GET", track_uri)
+
+    def track_like_unlike(self, track_id):
+        params = {
+            "action": "likes",
+            "trackid": track_id
+        }
+        return self._request(
+            "GET", "/trackimgcnt.php", params=params)
+
+    def add_playlist(self, name, track_id=None):
+        payload = {
+            "action": "add",
+            "new_set": name
+        }
+        if track_id:
+            payload["track_id"] = track_id
+        return self._request("POST", "/set_ajax_add.php", payload=payload)
+
+    def add_playlist_track(self, playlist_id, track_id):
+        payload = {
+            "action": "add",
+            "id": track_id,
+            "setid": playlist_id
+        }
+        return self._request("POST", "/set_ajax_add.php", payload=payload)
+
+    def sort_playlist(self, playlist_id, track_id_arr):
+        payload = {
+            "action": "sort",
+            "track_light__move": track_id_arr,
+            "set_id": playlist_id
+        }
+        return self._request("POST", "/set_ajax_edit.php", payload=payload)
+
+    def delete_playlist(self, playlist_id, track_id=None):
+        if track_id:
+            payload = {
+                "action": "deleteentry",
+                "id": track_id,
+                "set_id": playlist_id
+            }
+        else:
+            payload = {
+                "action": "delete",
+                "set": playlist_id
+            }
+        return self._request("POST", "/set_ajax_edit.php", payload=payload)
