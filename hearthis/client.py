@@ -79,19 +79,22 @@ class Hearthis(object):
     def user_history(self, page=None, count=None):
         if not self.is_logged_in:
             raise Exception("Log in required")
-        params = dict()
-        params["page"] = page if page else self.default_page
-        params["count"] = count if count else self.default_count
+
+        params = {
+            "page": page if page else self.default_page,
+            "count": count if count else self.default_count
+        }
         return self._request("GET", "/v2.2/htry/", params=params)
 
     def all_genres(self):
         return self._request("GET", "/categories/")
 
     def genre_list(self, genre, page=None, count=None, duration=None):
-        params = dict()
-        params["page"] = page if page else self.default_page
-        params["count"] = count if count else self.default_count
-        params["duration"] = duration if duration else self.default_duration
+        params = {
+            "page": page if page else self.default_page,
+            "count": count if count else self.default_count,
+            "duration": duration if duration else self.default_duration
+        }
         return self._request("GET", "/categories/%s/" % genre, params=params)
 
     def single_artist(self, artist):
