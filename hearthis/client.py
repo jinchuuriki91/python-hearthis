@@ -1,13 +1,16 @@
 # Python imports
-import json
 from requests import Session
 
 
 class Hearthis(object):
 
     SEARCH_TYPE = ["tracks", "user", "playlists"]
+    FEED_TYPE = ["popular", "new"]
 
-    def __init__(self, email=None, password=None, requests_timeout=None, requests_session=None):
+    def __init__(
+            self, email=None, password=None, requests_timeout=None,
+            requests_session=None):
+
         self.base_url = "https://api-v2.hearthis.at"
         self.is_logged_in = False
         self.default_page = 1
@@ -62,8 +65,22 @@ class Hearthis(object):
     def logout(self):
         return self._request("GET", "/logout/")
 
+    def feed(
+            self, page=None, count=None, duration=None, type="", category="",
+            show_feed_start="", show_feed_end=""):
+        params = {
+            "page": page if page else self.default_page,
+            "count": count if count else self.default_count,
+            "duration": duration if duration else self.default_duration,
+            "type": type,
+            "category": category,
+            "show-feed-start": show_feed_start,
+            "show-feed-end": show_feed_end
+        }
+        return self._request("GET", "/feed/", params=params)
+
     def search(
-        self, query, type="tracks", page=None, count=None, duration=None):
+            self, query, type="tracks", page=None, count=None, duration=None):
 
         if type not in self.SEARCH_TYPE:
             raise Exception("Invalid search type")
