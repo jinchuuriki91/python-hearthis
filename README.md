@@ -13,7 +13,7 @@ python setup.py install
 You can also install it using a popular package manager with
 
 ```bash
-pip install spotipy
+pip install python-hearthis
 ```
 
 ## Quick Start
