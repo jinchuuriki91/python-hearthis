@@ -32,6 +32,83 @@ response = heart.feed()
 
 - All Genres
 ```python
-# returns list of all genres
 response = heart.all_genres()
 ```
+
+- Genre List
+```python
+response = heart.genre_list()
+```
+|Parameter|Value|Default|Description|
+|---|---|---|---|
+|genre|str|-|Genre from All Genres API|
+|page|int|1|page to how|
+|count|int|5|entries per page (max: 20)|
+|duration|int|-|duration (+/- 5 minutes)|
+
+- Single Artist
+```python
+response = heart.artist()
+```
+
+- Single Artist Follow/Unfollow
+```python
+response = heart.artist_follow_unfollow()
+```
+|Parameter|Value|Default|Description|
+|---|---|---|---|
+|artist_id|int|-|ID of artist|
+
+- Artist List
+```python
+response = heart.artist_list()
+```
+|Parameter|Value|Default|Description|
+|---|---|---|---|
+|artist|str|1|Artist username|
+|type|str|["tracks", "user", "playlists"]||
+|page|int|1|page to how|
+|count|int|5|entries per page (max: 20)|
+
+- Track
+```python
+response = heart.track()
+```
+|Parameter|Value|Default|Description|
+|---|---|---|---|
+|track_uri|str|-|Track URI|
+
+- Track Like/Unlike
+```python
+response = heart.track_like_unlike()
+```
+|Parameter|Value|Default|Description|
+|---|---|---|---|
+|track_id|int|-|ID of track|
+
+- Add Playlist
+```python
+response = heart.add_playlist()
+```
+|Parameter|Value|Default|Description|
+|---|---|---|---|
+|name|str|-|Name of track|
+|track_id|int|-|ID of track (optional)|
+
+- Add Existing playlist track
+```python
+response = heart.add_playlist_track()
+```
+|Parameter|Value|Default|Description|
+|---|---|---|---|
+|playlist_id|int|-|ID of playlist|
+|track_id|int|-|ID of track|
+
+- Delete Track and Playlist
+```python
+response = heart.delete_playlist()
+```
+|Parameter|Value|Default|Description|
+|---|---|---|---|
+|playlist_id|int|-|ID of playlist|
+|track_id|int|-|ID of track (optional)|
