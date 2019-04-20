@@ -1,7 +1,20 @@
 # python-hearthis
-Unofficial Python client for hearthis.io API https://hearthis.at/api-v2/
+Unofficial Python library for hearthis.io API https://hearthis.at/api-v2/
 ## Dependencies
 - [Requests](https://github.com/kennethreitz/requests) - package required for making requests
+
+## Installation
+If you already have [Python](http://www.python.org/) on your system you can install the library simply by downloading the distribution, unpack it and install in the usual fashion:
+
+```bash
+python setup.py install
+```
+
+You can also install it using a popular package manager with
+
+```bash
+pip install spotipy
+```
 
 ## Quick Start
 ```python

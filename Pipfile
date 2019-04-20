@@ -9,6 +9,7 @@ requests = "*"
 [dev-packages]
 ipython = "*"
 "flake8" = "*"
+twine = "*"
 
 [requires]
 python_version = "3.6"
