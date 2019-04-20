@@ -49,9 +49,6 @@ class Hearthis(object):
         finally:
             req.connection.close()
 
-        print(req.request.url)
-        print(req.request.body)
-        print(req.content)
         try:
             return req.json()
         except JSONDecodeError:
